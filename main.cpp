@@ -13,10 +13,38 @@ int main()
 	cout << DefaultParameters::MotorController_B << " "
 		<< DefaultParameters::MotorController_ch << " "
 		<< DefaultParameters::wheel_radius << endl;
+	cout << DefaultParameters::track_tick << endl;
 
+	Path path;
+	/*path.append(Point{-1 * 0.1, sin(1 * 2 * PI / 50) }, 0.5);
+	for (int i = 2; i < 50; i++) {
+		path.append(Point{-i * 0.1, sin(i * 2 * PI / 50) }, 0.3);
+	}*/
+
+	
+	for (int i = 1; i < 50; i++) {
+		double r = i / 20.;
+		double a = i / 500. * 2 * PI;
+		double y = r * cos(a);
+		double x = r * sin(a);
+		path.append(Point{ x, y }, 0.5);
+	}
+
+	RobotCoordinator robot;
 
 	MotorController mc;
-	double v = 1;
+
+	auto control = mc.trackPath(robot, path);
+
+	for (auto c : control) {
+		auto ans = mc.convertRobotToWheel(c.v, c.w);
+		cout << ans.lw << " " << ans.rw << endl;
+	}
+
+	cerr << path.getErrdis() << " " << path.getErrtime() << endl;
+
+	
+	/*double v = 1;
 	double w = 2*PI;
 	for (int i = 0; i < 50; i++)
 	{
@@ -27,7 +55,7 @@ int main()
 	{
 		auto ans = mc.convertRobotToWheel(v * i / 100, w);
 		cout << ans.lw << " " << ans.rw << endl;
-	}
+	}*/
 
 	return 0;
 }
