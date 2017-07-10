@@ -16,19 +16,19 @@ int main()
 	cout << DefaultParameters::track_tick << endl;
 
 	Path path;
-	/*path.append(Point{-1 * 0.1, sin(1 * 2 * PI / 50) }, 0.5);
-	for (int i = 2; i < 50; i++) {
-		path.append(Point{-i * 0.1, sin(i * 2 * PI / 50) }, 0.3);
-	}*/
+	path.append(Point{-1 * 0.1, sin(1 * 2 * PI / 500) }, 2);
+	for (int i = 2; i < 500; i++) {
+		path.append(Point{-i * 0.01, sin(i * 2 * PI / 500) }, 0.07);
+	}
 
 	
-	for (int i = 1; i < 50; i++) {
+	/*for (int i = 1; i < 50; i++) {
 		double r = i / 20.;
 		double a = i / 500. * 2 * PI;
 		double y = r * cos(a);
 		double x = r * sin(a);
 		path.append(Point{ x, y }, 0.5);
-	}
+	}*/
 
 	RobotCoordinator robot;
 

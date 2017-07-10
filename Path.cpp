@@ -41,7 +41,17 @@ std::tuple<Point, double, double> Path::lookahead(RobotCoordinator &robot, doubl
 	if (path.empty()) {
 		return std::make_tuple(record.back().p, ti, dis);
 	} else {
-		return std::make_tuple(path.front().p, ti, dis);
+		//linear interpolation
+		Point PA = now, PB = path.front().p;
+		double tA = beforePathTime - robot.getTime();
+		double tB = ti;
+		double disA = dis - getDistance(PA, PB);
+		double disB = dis;
+		double per = std::max((lookahead_time - tA) / (tB - tA), (lookahead_distance - disA) / (disB - disA));
+		Point P_res = Point{ PA.x * (1 - per) + PB.x * per, PA.y * (1 - per) + PB.y * per };
+		double t_res = tA * (1 - per) + tB * per;
+		double dis_res = disA * (1 - per) + disB * per;
+		return std::make_tuple(P_res, t_res, dis_res);
 	}
 	return std::tuple<Point, double, double>();
 }
@@ -63,8 +73,8 @@ void Path::applyMovement(RobotCoordinator & robot, double tick)
 		if (sdis < edis || edis < 1e-2) {
 			errdis = std::max(errdis, getDistance(record.front().p, startPos));
 			errtime = std::max(errtime, abs(robot.getTime() - record.front().t));
-			//std::cerr << getDistance(record.front().p, startPos) << " ";
-			//std::cerr << robot.getTime() - record.front().t << std::endl;
+			std::cerr << getDistance(record.front().p, startPos) << " ";
+			std::cerr << robot.getTime() - record.front().t << std::endl;
 			record.pop_front();
 		}
 		else break;

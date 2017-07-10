@@ -11,9 +11,10 @@ namespace DefaultParameters
 
 	double wheel_radius = 0.11; //(m)
 
-	double default_lookahead_ratio = 0.3;
-	double min_lookahead = 0.3;
-	double default_lookahead_time = 0.3;
+	double default_lookahead_ratio = 0.5;
+	double min_lookahead = 0;
+	double default_lookahead_time = 0.5;
+
 	double track_tick = 0.01;
 	double max_angular_acceleration = 0.5, max_angular_veclocity = 1, angular_decay = pow(0.5, track_tick);
 	double max_linear_acceleration = 0.25, max_linear_veclocity = 0.5, linear_decay = pow(0.8, track_tick);

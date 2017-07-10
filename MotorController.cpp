@@ -40,34 +40,31 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 	double lookahead_distance = std::max(lookahead_ratio * robot.getv(), min_lookahead);
 	std::tie(target, time, distance) = path.lookahead(robot, lookahead_distance, default_lookahead_time);
 	if (time < track_tick) time = track_tick;
+	double straight_dis = getDistance(robot.getPos(), target);
 
 	double r, v, w;
-	if (distance + 1e-6 >= lookahead_distance ) {
-		// do a curve in lookahead_distance, and move straightly in the left distance
-		// rsin+dcos = y; r-rcos+dsin = x
-		// -> r = (x2+y2-d2)/2x
-		double d = distance - lookahead_distance;
+	if (distance + 1e-6 >= lookahead_distance){
+		// rsin = y; r-rcos = x
+		// -> r = (x2+y2)/2x
 		Point relativePos = robot.globalToRobot(target);
 		if (relativePos.y < 0) {
 			std::cerr << "Path Tracing Failed! Too Curved, Not Enough Sample or Time Limited is too Strict!" << std::endl;
 			throw std::runtime_error("Path Tracing Failed! Too Curved, Not Enough Sample or Time Limited is too Strict!");
 		}
-		r = (relativePos.x*relativePos.x + 
-				relativePos.y*relativePos.y
-				- d*d) / 2 / relativePos.x;
-		v = lookahead_distance / time * 1.2; // TODO: distance is approximate, try to solve theta
+		r = (relativePos.x*relativePos.x + relativePos.y*relativePos.y) / 2 / relativePos.x;
+		v = straight_dis / time * 1.3; // TODO: distance is approximate, try to solve theta
 		w = v / r;
 
 	} else {
 		// path is end, must stop at end of the path
 		Point relativePos = robot.globalToRobot(target);
-		r = (relativePos.x*relativePos.x + relativePos.y*relativePos.y
-				) / 2 / relativePos.x;
-		v = distance / time * 2; // TODO: distance is approximate, try to solve theta
+		r = (relativePos.x*relativePos.x + relativePos.y*relativePos.y) / 2 / relativePos.x;
+		v = straight_dis / time * 2; // TODO: distance is approximate, try to solve theta
 		w = v / r;
-		if (time * max_linear_acceleration < v || time * max_angular_acceleration < w)
-			v = sqrt(distance * max_linear_acceleration * track_tick);
-		w = v / r;
+		if (time * max_linear_acceleration < v || time * max_angular_acceleration < w) {
+			v = sqrt(straight_dis * max_linear_acceleration * track_tick);
+			w = v / r;
+		}
 	}
 
 	w = robot.applyAngularVeclocity(w, max_angular_acceleration, max_angular_veclocity, angular_decay, track_tick);
@@ -75,7 +72,7 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 	v = robot.applyLinearVeclocity(v, max_linear_acceleration, max_linear_veclocity, linear_decay, track_tick);
 
 	path.applyMovement(robot, track_tick);
-	std::cerr << robot.getPos().x << " " << robot.getPos().y << " " << v << std::endl;
+	//std::cerr << robot.getPos().x << " " << robot.getPos().y << " " << v << std::endl;
 
 	return BodyVeclocity{ v, w };
 }
