@@ -21,14 +21,27 @@ class Path
 	double beforePathTime, errdis, errtime;
 	std::deque<Node> record;
 
+
+public:
+	//For MotorController
+	//lookahead according path
+	std::tuple<Point, double, double> lookahead(RobotCoordinator &robot, double lookahead_distance, double lookahead_time);
+	//check path if end
+	bool end();
+	//move robot and record path
+	void applyMovement(RobotCoordinator &robot, double tick);
+
 public:
 	Path();
 
+	/**
+	append a path node
+	input: path node coordinate, time requirement betweem this point and last point
+	**/
 	void append(const Point &p, double t);
-	std::tuple<Point, double, double> lookahead(RobotCoordinator &robot, double lookahead_distance, double lookahead_time);
-	bool end();
-	void applyMovement(RobotCoordinator &robot, double tick);
-
+	
+	//get error in distance
 	double getErrdis() const;
+	//get error in time
 	double getErrtime() const;
 };

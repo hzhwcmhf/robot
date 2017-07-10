@@ -14,8 +14,8 @@ MotorController::MotorController()
 	
 	diffR = ch * B / 2;
 
-	default_lookahead_ratio = DefaultParameters::default_lookahead_ratio;
-	min_lookahead = DefaultParameters::min_lookahead;
+	default_lookahead_distance_ratio = DefaultParameters::default_lookahead_distance_ratio;
+	min_lookahead_distance = DefaultParameters::min_lookahead_distance;
 	default_lookahead_time = DefaultParameters::default_lookahead_time;
 	track_tick = DefaultParameters::track_tick;
 	max_angular_acceleration = DefaultParameters::max_angular_acceleration;
@@ -33,11 +33,16 @@ MotorController::WheelAngularVeclocity MotorController::convertRobotToWheel(doub
 	return WheelAngularVeclocity{wL, wR};
 }
 
+MotorController::WheelAngularVeclocity MotorController::convertRobotToWheel(BodyVeclocity b) const
+{
+	return convertRobotToWheel(b.v, b.w);
+}
+
 MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordinator & robot, Path & path)
 {
 	Point target;
 	double time, distance;
-	double lookahead_distance = std::max(lookahead_ratio * robot.getv(), min_lookahead);
+	double lookahead_distance = std::max(default_lookahead_distance_ratio * robot.getv(), min_lookahead_distance);
 	std::tie(target, time, distance) = path.lookahead(robot, lookahead_distance, default_lookahead_time);
 	if (time < track_tick) time = track_tick;
 	double straight_dis = getDistance(robot.getPos(), target);
@@ -80,7 +85,6 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 std::vector<MotorController::BodyVeclocity> MotorController::trackPath(RobotCoordinator &robot, Path &path)
 {
 	std::vector<BodyVeclocity> controls;
-	lookahead_ratio = default_lookahead_ratio;
 	while (!path.end())
 	{
 		controls.push_back(trackPathForOneStep(robot, path));

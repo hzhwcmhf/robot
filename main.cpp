@@ -16,11 +16,11 @@ int main()
 	cout << DefaultParameters::track_tick << endl;
 
 	Path path;
+
 	path.append(Point{-1 * 0.1, sin(1 * 2 * PI / 500) }, 2);
 	for (int i = 2; i < 500; i++) {
 		path.append(Point{-i * 0.01, sin(i * 2 * PI / 500) }, 0.07);
 	}
-
 	
 	/*for (int i = 1; i < 50; i++) {
 		double r = i / 20.;
@@ -31,13 +31,12 @@ int main()
 	}*/
 
 	RobotCoordinator robot;
-
 	MotorController mc;
 
 	auto control = mc.trackPath(robot, path);
 
 	for (auto c : control) {
-		auto ans = mc.convertRobotToWheel(c.v, c.w);
+		auto ans = mc.convertRobotToWheel(c);
 		cout << ans.lw << " " << ans.rw << endl;
 	}
 

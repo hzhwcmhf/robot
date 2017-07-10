@@ -16,7 +16,13 @@ class RobotCoordinator
 	double x, y, theta;
 	double v, w;
 	double t;
-	
+
+public:
+	double applyAngularVeclocity(double target_w, double maxa, double maxw, double decay, double t);
+	double applyLinearVeclocity(double target_v, double maxa, double maxv, double decay, double t);
+
+	double applyMovement(double tick);
+
 public:
 	RobotCoordinator(double _x = 0, double _y = 0, double _theta = 0, double _t = 0);
 
@@ -27,8 +33,4 @@ public:
 
 	Point globalToRobot(const Point &p) const;
 
-	double applyAngularVeclocity(double target_w, double maxa, double maxw, double decay, double t);
-	double applyLinearVeclocity(double target_v, double maxa, double maxv, double decay, double t);
-
-	double applyMovement(double tick);
 };

@@ -11,11 +11,22 @@ namespace DefaultParameters
 
 	double wheel_radius = 0.11; //(m)
 
-	double default_lookahead_ratio = 0.5;
-	double min_lookahead = 0;
-	double default_lookahead_time = 0.5;
+	//pure pursuit algorithm need a lookahead point to pursuit
+	//lookahead_distance indicates the minimum distance between lookahead point and robot
+	//lookahead_distance =  min(default_lookahead_distance_ratio * speed, min_lookahead_distance)
+	double default_lookahead_distance_ratio = 0.5, min_lookahead_distance = 0; //(m)
+	//lookahead_time indicates the minimum time between lookahead point and robot 
+	double default_lookahead_time = 0.5; //(s)
 
-	double track_tick = 0.01;
-	double max_angular_acceleration = 0.5, max_angular_veclocity = 1, angular_decay = pow(0.5, track_tick);
-	double max_linear_acceleration = 0.25, max_linear_veclocity = 0.5, linear_decay = pow(0.8, track_tick);
+	//every movements of tracking path will cost track_tick(s) time
+	double track_tick = 0.01; //(s)
+
+	//limit the robot angular speed
+	//last_w * angular_decay - max_angular_acceleration <= w <= last_w * angular_decay + max_angular_acceleration
+	// and:  -max_angular_veclocity <= w <= max_angular_veclocity
+	double max_angular_acceleration = 0.5, max_angular_veclocity = 1, angular_decay = pow(0.5, track_tick); //(rad/s^2, rad/s, decay coef per tick)
+	//limit the robot linear speed
+	//last_v * linear_decay - max_linear_acceleration <= v <= last_v * linear_decay + max_linear_acceleration
+	// and:  0 <= v <= max_linear_veclocity
+	double max_linear_acceleration = 0.25, max_linear_veclocity = 0.5, linear_decay = pow(0.7, track_tick);//(m/s^2, m/s, decay coef per tick)
 }
