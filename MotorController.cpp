@@ -63,7 +63,6 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 		r = (relativePos.x*relativePos.x + relativePos.y*relativePos.y) / 2 / relativePos.x;
 		v = straight_dis / time * 1.3; // TODO: distance is approximate, try to solve theta
 		w = v / r;
-
 	} else {
 		// path is end, must stop at end of the path
 		Point relativePos = robot.globalToRobot(target);
@@ -77,7 +76,8 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 	}
 
 	w = robot.applyAngularVeclocity(w, max_angular_acceleration, max_angular_veclocity, angular_decay, track_tick);
-	v = w * r;
+	if(std::abs(r) < 1e6)
+		v = w * r;
 	v = robot.applyLinearVeclocity(v, max_linear_acceleration, max_linear_veclocity, linear_decay, track_tick);
 
 	path.applyMovement(robot, track_tick);

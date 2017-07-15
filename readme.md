@@ -36,7 +36,7 @@
 
 ## Path
 
-* void append(const Point &p, double t)
+* void append(const Point &p, double t)  
 	参数： 下一个目标点，从上一个目标点到这个目标点所需时间。
 * void append(const Point &p)  
 	参数： 下一个目标点，没有时间限制。
