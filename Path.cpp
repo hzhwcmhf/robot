@@ -72,6 +72,7 @@ std::tuple<Point, double, double> Path::lookahead(RobotCoordinator &robot, doubl
 		double disA = dis - getDistance(PA, PB);
 		double disB = dis;
 		double per = std::max((lookahead_time - tA) / (tB - tA), (lookahead_distance - disA) / (disB - disA));
+		if (per < 0) per = 0;
 		Point P_res = Point{ PA.x * (1 - per) + PB.x * per, PA.y * (1 - per) + PB.y * per };
 		double t_res = tA * (1 - per) + tB * per;
 		double dis_res = disA * (1 - per) + disB * per;
