@@ -97,7 +97,7 @@ void Path::applyMovement(RobotCoordinator & robot, double tick)
 		double edis = getDistance(endPos, record.front().p);
 		if (sdis < edis || edis < 1e-2) {
 			errdis = std::max(errdis, getDistance(record.front().p, startPos));
-			errtime = std::max(errtime, abs(robot.getTime() - record.front().t));
+			errtime = std::max(errtime, std::abs(robot.getTime() - record.front().t));
 			//std::cerr << getDistance(record.front().p, startPos) << " ";
 			//std::cerr << robot.getTime() - record.front().t << std::endl;
 			record.pop_front();
