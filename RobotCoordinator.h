@@ -9,6 +9,14 @@ struct Point
 	{
 		return sqrt((p.x - q.x) * (p.x - q.x) + (p.y - q.y) * (p.y - q.y));
 	}
+
+	friend double getDirection(const Point &q, const Point &p)
+	{
+		const double PI = acos(-1);
+		double ans =  PI/2 - atan2(p.y - q.y, p.x - q.x);
+		if (ans < 0) ans += 2 * PI;
+		return ans;
+	}
 };
 
 class RobotCoordinator
@@ -24,7 +32,7 @@ public:
 	double applyMovement(double tick);
 
 public:
-	RobotCoordinator(double _x = 0, double _y = 0, double _theta = 0, double _t = 0);
+	RobotCoordinator(double _x = 0, double _y = 0, double _theta = 0, double _v = 0, double _w = 0, double _t = 0);
 
 	double getv() const;
 	double getTime() const;

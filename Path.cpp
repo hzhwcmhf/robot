@@ -15,6 +15,30 @@ void Path::append(const Point & p, double t)
 	path.emplace_back(p, t, 0.);
 }
 
+void Path::append(const Point & p)
+{
+	path.emplace_back(p, -1, 0.);
+}
+
+void Path::initPath(const RobotCoordinator &robot, double v, double w)
+{
+	const double PI = acos(-1);
+	double nowTheta = robot.getTheta();
+	Point now = robot.getPos();
+	for (auto &p : path) {
+		double dir = getDirection(now, p.p);
+		if (p.t < 0) {
+			double dis = getDistance(now, p.p);
+			double angle = std::abs(dir - nowTheta);
+			if (2 * PI - angle < angle) angle = 2 * PI - angle;
+			double t = std::max(dis / v * 1.1, angle / w); // TODO: distance is approximate
+			p.t = t;
+		}
+		nowTheta = dir;
+		now = p.p;
+	}
+}
+
 std::tuple<Point, double, double> Path::lookahead(RobotCoordinator &robot, double lookahead_distance, double lookahead_time)
 {
 	double dis = 0, ti = beforePathTime - robot.getTime();
@@ -98,6 +122,8 @@ void Path::applyMovement(RobotCoordinator & robot, double tick)
 	record = newRecord;*/
 
 }
+
+
 
 double Path::getErrdis() const
 {

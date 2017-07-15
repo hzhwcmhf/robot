@@ -13,22 +13,24 @@ int main()
 	cout << DefaultParameters::MotorController_B << " "
 		<< DefaultParameters::MotorController_ch << " "
 		<< DefaultParameters::wheel_radius << endl;
+	cout << DefaultParameters::max_linear_veclocity << " "
+		<< DefaultParameters::max_angular_veclocity << endl;
 	cout << DefaultParameters::track_tick << endl;
 
 	Path path;
 
-	path.append(Point{-1 * 0.1, sin(1 * 2 * PI / 500) }, 2);
+	/*path.append(Point{-1 * 0.1, sin(1 * 2 * PI / 500) }, -1);
 	for (int i = 2; i < 500; i++) {
-		path.append(Point{-i * 0.01, sin(i * 2 * PI / 500) }, 0.07);
-	}
+		path.append(Point{-i * 0.01, sin(i * 2 * PI / 500) }, -1);
+	}*/
 	
-	/*for (int i = 1; i < 50; i++) {
+	for (int i = 1; i < 50; i++) {
 		double r = i / 20.;
 		double a = i / 500. * 2 * PI;
 		double y = r * cos(a);
 		double x = r * sin(a);
-		path.append(Point{ x, y }, 0.5);
-	}*/
+		path.append(Point{ x, y });
+	}
 
 	RobotCoordinator robot;
 	MotorController mc;

@@ -31,6 +31,9 @@ public:
 	//move robot and record path
 	void applyMovement(RobotCoordinator &robot, double tick);
 
+	//generate time requirement of path
+	void initPath(const RobotCoordinator &robot, double v, double w);
+
 public:
 	Path();
 
@@ -39,6 +42,7 @@ public:
 	input: path node coordinate, time requirement betweem this point and last point
 	**/
 	void append(const Point &p, double t);
+	void append(const Point &p);
 	
 	//get error in distance
 	double getErrdis() const;

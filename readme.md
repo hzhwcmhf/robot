@@ -30,7 +30,7 @@
     参数：v 速度(m/s)  w 角速度(rad/s,顺时针)   
     返回值：结构体{左轮角速度(rad/s),右轮角速度(rad/s)}
 
-* std::vector<BodyVeclocity> trackPath(RobotCoordinator &robot, Path &path)
+* std::vector<BodyVeclocity> trackPath(RobotCoordinator &robot, Path &path)  
 	参数：机器人,路径  
 	返回值：机器人移动操作序列
 
@@ -38,6 +38,8 @@
 
 * void append(const Point &p, double t)
 	参数： 下一个目标点，从上一个目标点到这个目标点所需时间。
+* void append(const Point &p)  
+	参数： 下一个目标点，没有时间限制。
 
 * double getErrdis() const
 * double getErrtime() const  
@@ -45,8 +47,8 @@
 
 ## Robot
 
-* RobotCoordinator(double _x = 0, double _y = 0, double _theta = 0, double _t = 0)
-	初始化机器人位置，朝向，时间
+* RobotCoordinator(double _x = 0, double _y = 0, double _theta = 0, double _v = 0, double _w = 0, double _t = 0)  
+	初始化机器人位置，朝向，速度， 角速度，时间。注意机器人初始朝y轴正方向。角速度顺时针为正。
 * double getv() const
 * double getTime() const
 * Point getPos() const

@@ -48,7 +48,11 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 	double straight_dis = getDistance(robot.getPos(), target);
 
 	double r, v, w;
-	if (distance + 1e-6 >= lookahead_distance){
+	if (distance < 1e-2) {
+		v = 0;
+		w = 0;
+		r = 0;
+	}else if (distance + 1e-6 >= lookahead_distance){
 		// rsin = y; r-rcos = x
 		// -> r = (x2+y2)/2x
 		Point relativePos = robot.globalToRobot(target);
@@ -84,6 +88,7 @@ MotorController::BodyVeclocity MotorController::trackPathForOneStep(RobotCoordin
 
 std::vector<MotorController::BodyVeclocity> MotorController::trackPath(RobotCoordinator &robot, Path &path)
 {
+	path.initPath(robot, max_linear_veclocity / 3, max_angular_veclocity / 2);
 	std::vector<BodyVeclocity> controls;
 	while (!path.end())
 	{

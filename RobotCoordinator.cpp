@@ -2,10 +2,10 @@
 
 #include <cmath>
 
-RobotCoordinator::RobotCoordinator(double _x, double _y, double _theta, double _t)
+RobotCoordinator::RobotCoordinator(double _x, double _y, double _theta, double _v, double _w, double _t)
 {
 	x = _x, y = _y, theta = _theta, t = _t;
-	v = 0, w = 0;
+	v = _v, w = _w;
 }
 
 double RobotCoordinator::getv() const
