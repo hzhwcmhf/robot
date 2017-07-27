@@ -28,4 +28,7 @@ namespace DefaultParameters
 	// and:  0 <= v <= max_linear_veclocity
 	extern double max_linear_acceleration, max_linear_veclocity, linear_decay; //(m/s^2, m/s, decay coef per tick)
 	
+	//target linear_veclocity, angular_veclocity, linear_acceleration for prediction
+	extern double target_v, target_w, target_a;
+	extern double path_tick;
 }

@@ -6,6 +6,7 @@
 
 class MotorController
 {
+protected:
 	double B; //distance between wheels
 	double ch; //ICR coefficent
 	double wheel_radius; 
@@ -31,6 +32,9 @@ class MotorController
 	// and:  0 <= v <= max_linear_veclocity
 	double max_linear_acceleration, max_linear_veclocity, linear_decay;
 
+	double target_v, target_w, target_a;
+	double path_tick;
+
 public:
 	struct WheelAngularVeclocity
 	{
@@ -39,11 +43,18 @@ public:
 	struct BodyVeclocity
 	{
 		double v, w;
+		BodyVeclocity(double _v, double _w)
+		{
+			v = _v, w = _w;
+		}
 	};
+
+protected:
+	//Make turn to path. This policy can be replaced.
+	std::vector<BodyVeclocity> turnToPath(RobotCoordinator &robot, Path &path);
 
 private:
 	BodyVeclocity trackPathForOneStep(RobotCoordinator &robot, Path &path);
-
 public:
 	
 	MotorController();
@@ -62,5 +73,5 @@ public:
 	input: robot, path
 	output: a array of body movement
 	**/
-	std::vector<BodyVeclocity> trackPath(RobotCoordinator &robot, Path &path);
+	std::vector<BodyVeclocity> trackPath(RobotCoordinator &robot, Path &path, bool debug=false);
 };

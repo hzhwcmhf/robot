@@ -29,4 +29,10 @@ namespace DefaultParameters
 	//last_v * linear_decay - max_linear_acceleration <= v <= last_v * linear_decay + max_linear_acceleration
 	// and:  0 <= v <= max_linear_veclocity
 	double max_linear_acceleration = 0.25, max_linear_veclocity = 0.5, linear_decay = pow(0.7, track_tick);//(m/s^2, m/s, decay coef per tick)
+
+	//target linear_veclocity, angular_veclocity, linear_acceleration for prediction
+	double target_v = max_linear_veclocity * 0.4;
+	double target_w = max_angular_veclocity * 0.5;
+	double target_a = max_linear_acceleration * 0.2;
+	double path_tick = track_tick * 5;
 }

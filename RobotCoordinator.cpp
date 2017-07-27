@@ -13,6 +13,11 @@ double RobotCoordinator::getv() const
 	return v;
 }
 
+double RobotCoordinator::getw() const
+{
+	return w;
+}
+
 double RobotCoordinator::getTime() const
 {
 	return t;
@@ -26,6 +31,11 @@ Point RobotCoordinator::getPos() const
 double RobotCoordinator::getTheta() const
 {
 	return theta;
+}
+
+bool RobotCoordinator::stopped() const
+{
+	return abs(v) < 1e-6 && abs(w) < 1e-6;
 }
 
 Point RobotCoordinator::globalToRobot(const Point & p) const
