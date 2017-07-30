@@ -223,7 +223,7 @@ std::vector<double> Path::predictTime(const RobotCoordinator &robot, const std::
 		double fixedTime = 0, normalTimeSum = 0, allTime;
 		bool atEnd = true;
 		for (int j = i; j < (int)constraintPoints.size(); j++) {
-			if (constraintPoints[j].t < 0) {
+			if (constraintPoints[j].t <= 0) {
 				normalTime.push_back(0);
 				fixedTime += -constraintPoints[j].t;
 			}else{

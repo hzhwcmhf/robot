@@ -1,7 +1,7 @@
 #pragma warning(disable:4996)
 #include <iostream>
 #include <cmath>
-#include "MotorController.h"
+#include "PathTracker.h"
 #include "defines.h"
 
 using namespace std;
@@ -10,8 +10,8 @@ int main()
 {
 	freopen("data.out", "w", stdout);
 
-	cout << DefaultParameters::MotorController_B << " "
-		<< DefaultParameters::MotorController_ch << " "
+	cout << DefaultParameters::motor_control_B << " "
+		<< DefaultParameters::motor_control_ch << " "
 		<< DefaultParameters::wheel_radius << endl;
 	cout << DefaultParameters::max_linear_veclocity << " "
 		<< DefaultParameters::max_angular_veclocity << endl;
@@ -86,16 +86,16 @@ int main()
 	RobotCoordinator robot;
 	//RobotCoordinator robot(0, 0, 0.1, 0.1, 0, 5);  //change the start status of robot
 	cout << robot.getPos().x << " " << robot.getPos().y << " " << robot.getTheta() << " " << robot.getTime() << endl;
-	MotorController mc;
+	PathTracker pt;
 
 	cout << endl;
 	path.printConstrainPointsForDebug();
 	cout << endl;
-	auto control = mc.trackPath(robot, path, true);
+	auto control = pt.trackPath(robot, path, true);
 	cout << endl;
 
 	for (auto c : control) {
-		auto ans = mc.convertRobotToWheel(c);
+		auto ans = pt.convertRobotToWheel(c);
 		cout << ans.lw << " " << ans.rw << endl;
 	}
 

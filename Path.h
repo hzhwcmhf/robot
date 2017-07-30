@@ -39,7 +39,7 @@ protected:
 	void interpolateUntilStop(const RobotCoordinator &robot, double targetV, double path_tick);
 
 public:
-	//For MotorController
+	//For PathTracker
 	//lookahead according path
 	std::tuple<Point, double, double> lookahead(RobotCoordinator &robot, double lookahead_distance, double lookahead_time);
 	//check all path is end
